@@ -4,10 +4,15 @@ require_once './simple_html_dom.php';
 $html = new simple_html_dom();
 
 
+if (!isset($_REQUEST["id"])) {
+    die(json_encode(["success" => false, "message" => "No id served"]));
+} else {
 
-    //$id = $_REQUEST["id"];
+    $id = $_REQUEST["id"];
+    //$id = "HR-SARERA/IMO-9157404/MMSI-405000291";
 
-    $url = "http://cpatos.gov.bd/pcs/index.php/Report/mySearchContainerLocation";
+
+    $url = "https://www.shiplocation.com/vessels/$id";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_URL, $url);
@@ -15,12 +20,12 @@ $html = new simple_html_dom();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
     $headers = array(
-        "Referer: http://cpatos.gov.bd/pcs/",
+        "Referer: http://122.152.54.179/myportpanel/",
         "Content-Type: application/x-www-form-urlencoded",
     );
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-    $data = "containerLocation=WHLU5443532&submit_login=Search";
+    $data = "";
 
     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 
@@ -32,14 +37,24 @@ $html = new simple_html_dom();
     curl_close($curl);
     // die($resp);
 
-   // $html->load($resp);
-   // $tables = $html->find('table');
-   // $table = $tables[1];
+    $html->load($resp);
+    $tables = $html->find('td');
+    $table = $tables[0];
     // $table2 = $table2[2];
-    echo $resp;
+    echo $table->save();
 
-   
-   // echo $js;
+   $js = "
+    <script>
+    $('table tbody tr td[bgcolor=\"#B5EFF0\"]')
+ .contents()
+ .filter(function(){return this.nodeType === 8;}) //get the comments
+ .replaceWith(function(){return this.data;})
+
+ $('tr td[height=\"80px\"]').hide()
+
+    </script>";
+    echo $js;
     // echo $table2->save();
+
     
-    ?>
+}

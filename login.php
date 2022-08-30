@@ -1,3 +1,8 @@
+<?php 
+// Include visitor log script 
+include_once 'log.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
    <head>

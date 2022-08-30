@@ -1,14 +1,18 @@
-<?php 
-// Include visitor log script 
-include_once 'log.php'; 
-?>
-
 <?php
 
 require_once './simple_html_dom.php';
 $html = new simple_html_dom();
 
-    $url = "http://cpatos.gov.bd/pcs//";
+
+if (!isset($_REQUEST["id"])) {
+    //die(json_encode(["success" => false, "message" => "No id served"]));
+} else {
+
+    $id = $_REQUEST["id"];
+    //$id = "HR-SARERA/IMO-9157404/MMSI-405000291";
+
+
+    $url = "https://www.shiplocation.com/vessels/$id";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_URL, $url);
@@ -21,9 +25,9 @@ $html = new simple_html_dom();
     );
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-   // $data = "";
+    $data = "";
 
-   // curl_setopt($curl, CURLOPT_POSTFIELDS);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 
     //for debug only!
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
@@ -34,10 +38,10 @@ $html = new simple_html_dom();
     // die($resp);
 
     $html->load($resp);
-    $tables = $html->find('section');
-    $table = $tables[1];
+    $tables = $html->find('td');
+    $table = $tables[0];
     // $table2 = $table2[2];
-    //echo $table;
+   // echo $table->save();
 
    $js = "
     <script>
@@ -52,6 +56,8 @@ $html = new simple_html_dom();
     echo $js;
     // echo $table2->save();
 
+    
+}
 ?>
 
 <!doctype html>
@@ -179,22 +185,14 @@ a:hover{
 
 
 table{
-    color: white !important;
+    color: white;
 }
-table:last-child{
-     margin: 30px 0;
-}
-#vasel section{
-   max-width: 100% !important;
+#vasel table{
+   width: 100%;
 }
 #vasel tr:hover {
-    background: #8aff09f7;
-    color: #000000;
-    text-shadow: none;
-    
-}
-#vasel tr{
-    font-weight: 600;
+background: white;
+color: #3300ff;
 }
 .iframe {
     overflow: scroll;
@@ -210,8 +208,7 @@ table:last-child{
     text-align: center;
     background: white;
 color: #3300ff;
-font-weight: 500;
-  text-shadow: none;
+font-weight: 600;
 }
 
 td{
@@ -253,13 +250,118 @@ color: #3300ff;
   display: revert !important;
 }
 
-.col-right div:first-child{
-    overflow: inherit !important;
+
+#vessel_info {
+    margin: 0px;
+    font-size: 18px;
 }
-.disclaimer {
-    display: none;
+
+#vessel_info ul {
+    min-width: 310px;
+    max-width: 400px;
+    width: 100%;
+    padding: 10px 15px 15px 15px;
+    display: block;
+    text-align: left;
+    border-radius: 10px;
+    background-color: transparent;
+    box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -moz-box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -webkit-box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
 }
+
+#vessel_info ul li {
+    padding: 0px 0px 19px 0px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    list-style-type: none;
+    text-align: left;
+    border-bottom: 1px solid #ffffff30;
+}
+#vessel_info ul li b {
+    display: inline-block;
+}
+
     </style>
+    <style>
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: ;
+  min-width: 190px;
+  max-width: 250px;
+  overflow: auto;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+#locationId:hover {background-color: rgba(0,0,0,0.5); color: white; }
+
+.show {display: block;}
+
+#myDropdown a{
+     font-size: 16px;
+    color: black;
+    padding: 6px 16px;
+    text-decoration: none;
+    display: block;
+    border: none;
+    font-weight: 600;
+    width: 100%;
+    background: white;
+    margin-top: 2px;
+    border-radius: 5px;
+}   
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+</style>
 </head>
 <body class="container">
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style="
@@ -273,18 +375,16 @@ color: #3300ff;
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item ">
         <a class="nav-link" href="/index.php">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/ctms.php">CTMS</a>
       </li>
-       <li class="nav-item">
-        <a class="nav-link" href="/vsl.php">Vassel info</a>
+       <li class="nav-item active">
+        <a class="nav-link"  href="/vsl.php">Vassel info</a>
       </li>
-        <li class="nav-item">
-        <a class="nav-link" target="_blank" href="/smail/index.html">S-Mail</a>
-      </li>
+       
       <li class="nav-item">
         <a class="nav-link" href="login.php">Login</a>
       </li>
@@ -299,73 +399,106 @@ color: #3300ff;
   </div>
 </nav>
     
-    
+        <marquee><h2 style="
+    margin-top: 72px;
+    background: -webkit-linear-gradient(#eee, #333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+">VASSEL INFO / CALL SIGN / IMO / MMSI </h2></marquee>
     
     
     
         <div id="cont" style="
-    margin-top: 67px;
+    margin-top: 10PX;
 ">
-        <h4 class="text-center mt-3">CONTAINER INFO</h4>
     
 
-    <form class="form" id="mainForm" style="
+    <form method="post" class="form" id="mainForm" style="
     padding-bottom: 40px;
 ">
-        <div class="mb-3">
-            <label for="locationInp" class="form-label">Container No</label>
-            <input class="form-control" id="locationInp" type="text" placeholder="Location" aria-label="LOCATION ID" onkeypress="showdiv()" required>
-        </div>
-        <input type="submit" id="locationId" class="btn text-center btn-primary"></input>
+        <div class="dropdown">
+             <input onclick="myFunction()" class="form-control" type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"
+  aria-label="Search" style="background: transparent; color: white; border: 1px solid white;" />
+ 
+  <div id="myDropdown" class="dropdown-content" STYLE="TEXT-ALIGN:CENTER; height:360px;">
+  
+    <a id="" href="?id=HR-AARAI/IMO-9123594/MMSI-405000338">HR AARAI</a>
+    <a id="" href="?id=HR-FARHA/IMO-9123582/MMSI-405000337">HR FARHA</a>
+    <a id="" href="?id=HR-HERA/IMO-9175614/MMSI-405000309">HR HERA</a>
+    <a id="" href="?id=HR-RHEA/IMO-9175597/MMSI-405000308">HR RHEA</a>
+    <a id="" href="?id=SHAHRIAR-JAHAN/IMO-8323678/MMSI-405000076">SHAHRIAR JAHAN</a>
+    <a id="" href="?id=SAN-ALFONSO/IMO-9344667/MMSI-636020191">SAN ALFONSO</a>
+    <a id="" href="?id=MANATEE/IMO-9377690/MMSI-636016269">MV MANATEE</a>
+    <a id="" href="?id=HAPPY-BEE/IMO-9367542/MMSI-636016186">HAPPY BEE</a>
+    <a id="" href="?id=X-PRESS-KOHIMA/IMO-9155016/MMSI-572158220">X PRESS KOHIMA</a>
+    <a id="" href="?id=AS-SICILIA/IMO-9430935/MMSI-255806100AS-SICILIA/IMO-9430935/MMSI-255806100">AS SICILIA</a>
+    <a id="" href="?id=EASTAWAY-JAMUNA/IMO-9348998/MMSI-563055100">EASTAWAY JAMUNA</a>
+    <a id="" href="?id=SOL-DELTA/IMO-9082805/MMSI-351552000">SOL DELTA</a>
+    <a id="" href="?id=X-PRESS-LHOTSE/IMO-9678642/MMSI-636016677">X PRESS LHOTSE</a>
+    <a id="" href="?id=SOL-STRAITS/IMO-9134658/MMSI-371751000">SOL STRAITS</a>
+    <a id="" href="?id=HR-SARERA/IMO-9157404/MMSI-405000291">HR SARERA</a> 
+    <a id="" href="?id=HR-SAHARE/IMO-9157399/MMSI-405000292">HR SAHARE</a> 
+  </div>
+</div>
+
+
+
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
+ 
    
     </form>
 
     <div class="iframe hid col-sm-12" id="iframe">
         	<div class="lds-dual-ring"></div>
     </div>
-    
- </div>
-    
-    <div id="vasel">
-        <h4 class="text-center mt-3"> </h4>
-        
-        <div class="form-outline" style="
-    max-width: 346px;
-">
-  <input type="search" id="filter" class="form-control" placeholder="Filter by Vessel/Rotation/Operator/Agent/NCT"
-  aria-label="Search" style="
-    background: transparent;
-    color: white;
-" />
-</div>
-        <div class="overflow-auto vsl" style="
+           <div class="overflow-auto vsl" style="
     overflow: scroll;
-    margin-top: 20px;
+    margin-top: ;
 ">
+               <div class="iframe hid col-sm-12" id="iframe">
+        	<div class="lds-dual-ring"></div>
+    </div>
             <?php echo $table; ?>
         </div>
     </div>
- 
-<div id="more">
-        <h3 class="text-center mt-3">More Service Link</h3>
+    
+ </div>
+    
+    <div id="vasel" style="
+    height: 40px;
+    text-align: center;
+    font-weight: bold;
+    background: none;
+    margin-top: 50px;
+    TEXT-SHADOW: 2PX 2px 2px #bf00b9;
+">
+        <a href="http://portauthor.cf/vsl-3rd.php" target="_blank">If your VASSEL not available in our Database then click here for 3rd aprty Database</a>
+    </div>
         
      
-           <br>
-           
-           <td align="center">
-           <a href="http://122.152.54.179/myportpanel/index.php/report/containerHandlingView" target="_blank">Yardwise Equipment Booking Report Today</a>
-           </td>
-           </tr>
-           <br>
-					
-					<tr>
-					    <td align="center"><a href="https://onedrive.live.com/embed?cid=7FA97FAAEFBA8E04&resid=7FA97FAAEFBA8E04%21418&authkey=AA_J68c8MFzxQgA&em=2" target="_blank">C & F List online</a></td></tr>
-					    
-					         
-        
-        
-        
-    </div>
     <!-- Optional JavaScript; choose one of the two! -->
     
     <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -374,11 +507,47 @@ color: #3300ff;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <script src="./script.js"></script>
+    <script>
+        
+        $(document).ready(() => {
+
+    $('#locationId').click((e) => {
+        e.preventDefault()
+        $('#mainForm').submit()
+    })
+
+    $('#mainForm').submit((e) => {
+        e.preventDefault();
+        console.log('submit');
+        id = $('#locationId').val();
+        var url = "vsl_req.php?id="+id;
+        $.ajax({
+            url: url,
+        }).done((resp)=>{
+            $('#iframe').html(resp)
+            $('#iframe').removeClass('visually-hidden')
+        })
+
+        // $('#iframe').html(`
+        // <iframe src="${url}">
+
+        // </iframe>
+        // `)
+
+
+    })
+
+    send_html = (html) => {
+        $('#iframe').html(html)
+        $('#iframe').removeClass('#visually-hidden')
+    }
+
+})
+    </script>
     <script>
 $('#locationId').click(function() {
     $('#iframe').css({
-        'display': 'block'
+        'display': 'grid'
     });
 });
 </script>

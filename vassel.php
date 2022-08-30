@@ -8,7 +8,9 @@ include_once 'log.php';
 require_once './simple_html_dom.php';
 $html = new simple_html_dom();
 
-    $url = "http://cpatos.gov.bd/pcs//";
+
+
+    $url = "https://www.shiplocation.com/vessels?";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_URL, $url);
@@ -21,7 +23,7 @@ $html = new simple_html_dom();
     );
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-   // $data = "";
+    $data = "vessel=sahare&flag=&sort=none&direction=none#table-anchor";
 
    // curl_setopt($curl, CURLOPT_POSTFIELDS);
 
@@ -34,8 +36,8 @@ $html = new simple_html_dom();
     // die($resp);
 
     $html->load($resp);
-    $tables = $html->find('section');
-    $table = $tables[1];
+    $tables = $html->find('td');
+    $table = $tables[0];
     // $table2 = $table2[2];
     //echo $table;
 
@@ -179,22 +181,14 @@ a:hover{
 
 
 table{
-    color: white !important;
+    color: white;
 }
-table:last-child{
-     margin: 30px 0;
-}
-#vasel section{
-   max-width: 100% !important;
+#vasel table{
+   width: 100%;
 }
 #vasel tr:hover {
-    background: #8aff09f7;
-    color: #000000;
-    text-shadow: none;
-    
-}
-#vasel tr{
-    font-weight: 600;
+background: white;
+color: #3300ff;
 }
 .iframe {
     overflow: scroll;
@@ -210,8 +204,7 @@ table:last-child{
     text-align: center;
     background: white;
 color: #3300ff;
-font-weight: 500;
-  text-shadow: none;
+font-weight: 600;
 }
 
 td{
@@ -253,13 +246,106 @@ color: #3300ff;
   display: revert !important;
 }
 
-.col-right div:first-child{
-    overflow: inherit !important;
+
+#vessel_info {
+    margin: 0px;
+    font-size: 18px;
 }
-.disclaimer {
-    display: none;
+
+#vessel_info ul {
+    min-width: 310px;
+    max-width: 400px;
+    width: 100%;
+    padding: 10px 15px 15px 15px;
+    display: block;
+    text-align: left;
+    border-radius: 10px;
+    background-color: transparent;
+    box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -moz-box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -webkit-box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
 }
+
+#vessel_info ul li {
+    padding: 0px 0px 19px 0px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    list-style-type: none;
+    text-align: left;
+    border-bottom: 1px solid #ffffff30;
+}
+#vessel_info ul li b {
+    display: inline-block;
+}
+
     </style>
+    <style>
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: ;
+  min-width: 190px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+#locationId:hover {background-color: rgba(0,0,0,0.5); color: white; }
+
+.show {display: block;}
+
+#locationId{
+     font-size: 16px;
+    color: black;
+    padding: 6px 16px;
+    text-decoration: none;
+    display: block;
+    border: none;
+    font-weight: 600;
+    width: 100%;
+    background: white;
+    margin-top: 2px;
+    border-radius: 5px;
+}   
+</style>
 </head>
 <body class="container">
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style="
@@ -278,9 +364,6 @@ color: #3300ff;
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/ctms.php">CTMS</a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link" href="/vsl.php">Vassel info</a>
       </li>
         <li class="nav-item">
         <a class="nav-link" target="_blank" href="/smail/index.html">S-Mail</a>
@@ -309,14 +392,49 @@ color: #3300ff;
         <h4 class="text-center mt-3">CONTAINER INFO</h4>
     
 
-    <form class="form" id="mainForm" style="
+    <form method="post" class="form" id="mainForm" style="
     padding-bottom: 40px;
 ">
-        <div class="mb-3">
-            <label for="locationInp" class="form-label">Container No</label>
-            <input class="form-control" id="locationInp" type="text" placeholder="Location" aria-label="LOCATION ID" onkeypress="showdiv()" required>
-        </div>
-        <input type="submit" id="locationId" class="btn text-center btn-primary"></input>
+        <div class="dropdown">
+             <input onclick="myFunction()" class="form-control" type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"
+  aria-label="Search" style="background: transparent; color: white; border: 1px solid white;" />
+ 
+  <div id="myDropdown" class="dropdown-content">
+   <input type="submit" id="locationId" class="" value="HR-SARERA/IMO-9157404/MMSI-405000291">HR SARERA</input>
+   <input type="submit" id="locationId" class="" value="lol"></input>
+   <input type="submit" id="locationId" class="" value="lol"></input>
+    <a href="#blog">Blog</a>
+    <a href="#contact">Contact</a>
+    <a href="#custom">Custom</a>
+    <a href="#support">Support</a>
+    <a href="#tools">Tools</a>
+  </div>
+</div>
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
+ 
    
     </form>
 
@@ -327,7 +445,7 @@ color: #3300ff;
  </div>
     
     <div id="vasel">
-        <h4 class="text-center mt-3"> </h4>
+        <h4 class="text-center mt-3">VESSEL INFO</h4>
         
         <div class="form-outline" style="
     max-width: 346px;
@@ -374,7 +492,43 @@ color: #3300ff;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <script src="./script.js"></script>
+    <script>
+        
+        $(document).ready(() => {
+
+    $('#locationId').click((e) => {
+        e.preventDefault()
+        $('#mainForm').submit()
+    })
+
+    $('#mainForm').submit((e) => {
+        e.preventDefault();
+        console.log('submit');
+        id = $('#locationInp').val();
+        var url = "vassel.php?id="+id;
+        $.ajax({
+            url: url,
+        }).done((resp)=>{
+            $('#iframe').html(resp)
+            $('#iframe').removeClass('visually-hidden')
+        })
+
+        // $('#iframe').html(`
+        // <iframe src="${url}">
+
+        // </iframe>
+        // `)
+
+
+    })
+
+    send_html = (html) => {
+        $('#iframe').html(html)
+        $('#iframe').removeClass('#visually-hidden')
+    }
+
+})
+    </script>
     <script>
 $('#locationId').click(function() {
     $('#iframe').css({

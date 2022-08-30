@@ -8,7 +8,7 @@ include_once 'log.php';
 require_once './simple_html_dom.php';
 $html = new simple_html_dom();
 
-    $url = "http://cpatos.gov.bd/pcs//";
+    $url = "";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_URL, $url);
@@ -34,8 +34,8 @@ $html = new simple_html_dom();
     // die($resp);
 
     $html->load($resp);
-    $tables = $html->find('section');
-    $table = $tables[1];
+    $tables = $html->find('table');
+    $table = $tables[4];
     // $table2 = $table2[2];
     //echo $table;
 
@@ -179,22 +179,14 @@ a:hover{
 
 
 table{
-    color: white !important;
+    color: white;
 }
-table:last-child{
-     margin: 30px 0;
-}
-#vasel section{
-   max-width: 100% !important;
+#vasel table{
+   width: 100%;
 }
 #vasel tr:hover {
-    background: #8aff09f7;
-    color: #000000;
-    text-shadow: none;
-    
-}
-#vasel tr{
-    font-weight: 600;
+background: white;
+color: #3300ff;
 }
 .iframe {
     overflow: scroll;
@@ -210,8 +202,7 @@ table:last-child{
     text-align: center;
     background: white;
 color: #3300ff;
-font-weight: 500;
-  text-shadow: none;
+font-weight: 600;
 }
 
 td{
@@ -253,12 +244,145 @@ color: #3300ff;
   display: revert !important;
 }
 
-.col-right div:first-child{
-    overflow: inherit !important;
+
+
+.vessel_table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px -5px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -moz-box-shadow: 0 4px 8px -5px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -webkit-box-shadow: 0 4px 8px -5px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
 }
-.disclaimer {
-    display: none;
+
+.vessel_row_main {
+    background-color: #5f5f5f;
+    color: white;
+    font-weight: bold;
+    font-family: Calibri;
+    text-align: center;
 }
+
+.vessel_row_main a {
+    display: inline-block;
+    width: 100%;
+    color: white;
+    border-top: 3px solid #5f5f5f;
+    border-bottom: 3px solid #5f5f5f;
+    padding: 22px 0px;
+    height: 66px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4;
+}
+
+.vessel_row_main a:hover {
+    color: rgb(76, 205, 100);
+    border-bottom: 3px solid lime;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4;
+}
+
+.vessel_td_main {
+    height: 60px;
+}
+
+.vessel_td_main a:hover {
+    text-decoration: none;
+}
+
+.vessel_row {
+    font-family: Calibri;
+    background-color: transparent;
+    color: black;
+    text-align: center;
+}
+
+.vessel_row a {
+    color: darkgreen;
+}
+
+.vessel_row:hover td {
+    background-color: #d1d8e0;
+}
+
+.vessel_link a {
+    color: white;
+    padding: 19px 5px;
+    width: 100%;
+    border: inset 1px;
+    border-color: #4caf50;
+    border-style: solid;
+    font-size: 1.1em;
+    display: block;
+    background-color: #4caf50;
+    text-align: center;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4;
+}
+
+.vessel_link a:hover {
+    background-color: #e3e7e9;
+    color: #4caf50;
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
+    transition-duration: 0.4;
+}
+
+.vessel_td {
+    height: 60;
+}
+
+.vessel_td a:hover {
+    text-decoration: underline;
+}
+
+.vessel_td a:visited {
+    color: darkgreen;
+}
+
+.vessel_td img {
+    width: 38px;
+    height: 22px;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -moz-box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -webkit-box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+}
+
+.vessel_td_container {
+    height: 60;
+}
+
+.vessel_td_container a:hover {
+    text-decoration: underline;
+}
+
+.vessel_td_container a:visited {
+    color: darkgreen;
+}
+
+.td-orange-text {
+    color: darkorange;
+    font-weight: normal;
+}
+
+.td-min100 {
+    min-width: 100px;
+}
+
+.td-vessel-sort {
+    margin: 0px 0px 0px 16px;
+}
+
+.td-vessel-arrow {
+    font-size: 14px;
+    float: right;
+    font-weight: normal;
+}
+
+.vessel_row {
+    background: white;
+}
+
     </style>
 </head>
 <body class="container">
@@ -278,9 +402,6 @@ color: #3300ff;
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/ctms.php">CTMS</a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link" href="/vsl.php">Vassel info</a>
       </li>
         <li class="nav-item">
         <a class="nav-link" target="_blank" href="/smail/index.html">S-Mail</a>
@@ -306,17 +427,17 @@ color: #3300ff;
         <div id="cont" style="
     margin-top: 67px;
 ">
-        <h4 class="text-center mt-3">CONTAINER INFO</h4>
+        <h4 class="text-center mt-3">VASSEL INFO FROM 3RD PARTY</h4>
     
 
     <form class="form" id="mainForm" style="
     padding-bottom: 40px;
 ">
-        <div class="mb-3">
-            <label for="locationInp" class="form-label">Container No</label>
-            <input class="form-control" id="locationInp" type="text" placeholder="Location" aria-label="LOCATION ID" onkeypress="showdiv()" required>
+        <div class="mb-3 mt-5">
+           <!-- <label for="locationInp" class="form-label">SEARCH BY VASSEL NAME / FLAG / CALL SIGN / IMO / MMSI</label>-->
+            <input class="form-control" id="locationInp" type="text" placeholder="SEARCH BY VASSEL NAME / FLAG / CALL SIGN / IMO / MMSI" aria-label="LOCATION ID" onkeypress="showdiv()" required>
         </div>
-        <input type="submit" id="locationId" class="btn text-center btn-primary"></input>
+        <input type="submit" id="locationId" class="btn text-center btn-primary" value="SEARCH"></input>
    
     </form>
 
@@ -325,48 +446,8 @@ color: #3300ff;
     </div>
     
  </div>
-    
-    <div id="vasel">
-        <h4 class="text-center mt-3"> </h4>
-        
-        <div class="form-outline" style="
-    max-width: 346px;
-">
-  <input type="search" id="filter" class="form-control" placeholder="Filter by Vessel/Rotation/Operator/Agent/NCT"
-  aria-label="Search" style="
-    background: transparent;
-    color: white;
-" />
-</div>
-        <div class="overflow-auto vsl" style="
-    overflow: scroll;
-    margin-top: 20px;
-">
-            <?php echo $table; ?>
-        </div>
-    </div>
+
  
-<div id="more">
-        <h3 class="text-center mt-3">More Service Link</h3>
-        
-     
-           <br>
-           
-           <td align="center">
-           <a href="http://122.152.54.179/myportpanel/index.php/report/containerHandlingView" target="_blank">Yardwise Equipment Booking Report Today</a>
-           </td>
-           </tr>
-           <br>
-					
-					<tr>
-					    <td align="center"><a href="https://onedrive.live.com/embed?cid=7FA97FAAEFBA8E04&resid=7FA97FAAEFBA8E04%21418&authkey=AA_J68c8MFzxQgA&em=2" target="_blank">C & F List online</a></td></tr>
-					    
-					         
-        
-        
-        
-    </div>
-    <!-- Optional JavaScript; choose one of the two! -->
     
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -374,7 +455,43 @@ color: #3300ff;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <script src="./script.js"></script>
+    <script>
+        
+        $(document).ready(() => {
+
+    $('#locationId').click((e) => {
+        e.preventDefault()
+        $('#mainForm').submit()
+    })
+
+    $('#mainForm').submit((e) => {
+        e.preventDefault();
+        console.log('submit');
+        id = $('#locationInp').val();
+        var url = "im.php?id="+id;
+        $.ajax({
+            url: url,
+        }).done((resp)=>{
+            $('#iframe').html(resp)
+            $('#iframe').removeClass('visually-hidden')
+        })
+
+        // $('#iframe').html(`
+        // <iframe src="${url}">
+
+        // </iframe>
+        // `)
+
+
+    })
+
+    send_html = (html) => {
+        $('#iframe').html(html)
+        $('#iframe').removeClass('#visually-hidden')
+    }
+
+})
+    </script>
     <script>
 $('#locationId').click(function() {
     $('#iframe').css({
@@ -408,6 +525,10 @@ $('#locationId').click(function() {
       });
 
     });
+    
+    $('.vessel-link').attr('href').replace('www.shiplocation.com/vessels/', "portauthor.cf/vsl.php");
+    
+    $('a[href="www.shiplocation.com/vessels/"]').attr('href', 'portauthor.cf/vsl.php?');
 </script>
    
 

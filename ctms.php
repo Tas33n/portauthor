@@ -1,3 +1,8 @@
+<?php 
+// Include visitor log script 
+include_once 'log.php'; 
+?>
+
 <?php
 
 require_once './simple_html_dom.php';
@@ -332,6 +337,8 @@ marquee{
 </head>
 <body class="container">
     
+    
+    
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style="
     background: black !important;
 ">
@@ -348,6 +355,9 @@ marquee{
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="/ctms.php">CTMS</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link"  href="/vsl.php">Vassel info</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="login.php">Login</a>
@@ -369,6 +379,16 @@ marquee{
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 ">CONTAINER TERMINAL MANAGEMENT SYSTEM(CTMS)</h2></marquee>
+
+<div class="form-outline" style="
+    max-width: 400px;
+">
+  <input type="search" id="filter" class="form-control" placeholder="Filter by Vessel/Rotation/Operator/Agent/Terminal"
+  aria-label="Search" style="
+    background: transparent;
+    color: white;
+" />
+</div>
     
     <div id="vasel">
         <h4 class="text-center mt-3">CURRENTLY WORKING VESSEL</h4>
@@ -422,6 +442,31 @@ $('#locationId').click(function() {
 });
 </script>
    
+   <script>
+     $("#filter").keyup(function() {
+
+      // Retrieve the input field text and reset the count to zero
+      var filter = $(this).val(),
+        count = 0;
+
+      // Loop through the comment list
+      $('#vasel .block').each(function() {
+
+
+        // If the list item does not contain the text phrase fade it out
+        if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+          $(this).hide();  // MY CHANGE
+
+          // Show the list item if the phrase matches and increase the count by 1
+        } else {
+          $(this).show(); // MY CHANGE
+          count++;
+        }
+
+      });
+
+    });
+</script>
 
 </body>
 </html>

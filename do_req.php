@@ -10,7 +10,7 @@ if (!isset($_REQUEST["id"])) {
 
     $id = $_REQUEST["id"];
 
-    $url = "http://122.152.54.179/myportpanel/index.php/report/mySearchContainerLocation";
+    $url = "http://cpatos.gov.bd/pcs/index.php/Report/mySearchContainerLocation";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_URL, $url);
@@ -18,7 +18,7 @@ if (!isset($_REQUEST["id"])) {
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
     $headers = array(
-        "Referer: http://122.152.54.179/myportpanel/",
+        "Referer: http://cpatos.gov.bd/pcs/",
         "Content-Type: application/x-www-form-urlencoded",
     );
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -37,8 +37,8 @@ if (!isset($_REQUEST["id"])) {
 
     $html->load($resp);
     $tables = $html->find('table');
-    $table = $tables[0];
-    // $table2 = $table2[2];
+    $table = $tables[1];
+    $table2 = $tables[2];
     echo $table->save();
 
    $js = "
@@ -48,11 +48,10 @@ if (!isset($_REQUEST["id"])) {
  .filter(function(){return this.nodeType === 8;}) //get the comments
  .replaceWith(function(){return this.data;})
 
- $('tr td[height=\"80px\"]').hide()
+$('tr td[height=\"80px\"]').hide()
 
     </script>";
-    echo $js;
-    // echo $table2->save();
-
+    //echo $js;
+     echo $table2->save();
     
 }
