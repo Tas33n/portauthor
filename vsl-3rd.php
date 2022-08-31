@@ -8,7 +8,7 @@ include_once 'log.php';
 require_once './simple_html_dom.php';
 $html = new simple_html_dom();
 
-    $url = "http://cpatos.gov.bd/ctmsdashboard/index.php";
+    $url = "";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_URL, $url);
@@ -16,7 +16,7 @@ $html = new simple_html_dom();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
     $headers = array(
-        "Referer: http://cpatos.gov.bd/",
+        "Referer: http://122.152.54.179/myportpanel/",
         "Content-Type: application/x-www-form-urlencoded",
     );
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -34,12 +34,21 @@ $html = new simple_html_dom();
     // die($resp);
 
     $html->load($resp);
-    $tables = $html->find('div[class=row]');
-    $table = $tables[0];
-    $table2 = $tables[1];
-    $table3 = $tables[2];
+    $tables = $html->find('table');
+    $table = $tables[4];
+    // $table2 = $table2[2];
     //echo $table;
 
+   $js = "
+    <script>
+    $('table tbody tr td[bgcolor=\"#B5EFF0\"]')
+ .contents()
+ .filter(function(){return this.nodeType === 8;}) //get the comments
+ .replaceWith(function(){return this.data;})
+
+ $('tr td[height=\"80px\"]').hide()
+
+    </script>";
     echo $js;
     // echo $table2->save();
 
@@ -64,8 +73,7 @@ $html = new simple_html_dom();
 </script>
     
     <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="icon" href="/icon.jpg">
     
     <!-- Primary Meta Tags -->
@@ -119,10 +127,11 @@ a:hover{
       }
       body {
           background: transparent;
+          TEXT-SHADOW: 1PX 1PX #1800ab;
       }
 #cont,#more,#vasel {
     border-radius: 8px;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.7);
     color: WHITE;
 }
 #cont {
@@ -208,6 +217,11 @@ td{
     border: 1.5px solid #00c5c5;
     height: 50px;
 }
+
+b{
+    display:block;
+    min-width: 180px;
+}
 a{
     text-decoration: none;
     color: aqua;
@@ -220,144 +234,177 @@ color: #3300ff;
 .hid {
     display: none;
 }
-h4{
-    background: black;
-}
-marquee{
-        margin-top: 61px;
-
-}
 .nav-item a:hover,.active a{
     color: white !important;
     text-shadow: 1px 1px #4300ff;
 }
+
+
+.gridDark:first-child {
+  display: revert !important;
+}
+
+
+
+.vessel_table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px -5px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -moz-box-shadow: 0 4px 8px -5px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -webkit-box-shadow: 0 4px 8px -5px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+}
+
+.vessel_row_main {
+    background-color: #5f5f5f;
+    color: white;
+    font-weight: bold;
+    font-family: Calibri;
+    text-align: center;
+}
+
+.vessel_row_main a {
+    display: inline-block;
+    width: 100%;
+    color: white;
+    border-top: 3px solid #5f5f5f;
+    border-bottom: 3px solid #5f5f5f;
+    padding: 22px 0px;
+    height: 66px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4;
+}
+
+.vessel_row_main a:hover {
+    color: rgb(76, 205, 100);
+    border-bottom: 3px solid lime;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4;
+}
+
+.vessel_td_main {
+    height: 60px;
+}
+
+.vessel_td_main a:hover {
+    text-decoration: none;
+}
+
+.vessel_row {
+    font-family: Calibri;
+    background-color: transparent;
+    color: black;
+    text-align: center;
+}
+
+.vessel_row a {
+    color: darkgreen;
+}
+
+.vessel_row:hover td {
+    background-color: #d1d8e0;
+}
+
+.vessel_link a {
+    color: white;
+    padding: 19px 5px;
+    width: 100%;
+    border: inset 1px;
+    border-color: #4caf50;
+    border-style: solid;
+    font-size: 1.1em;
+    display: block;
+    background-color: #4caf50;
+    text-align: center;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4;
+}
+
+.vessel_link a:hover {
+    background-color: #e3e7e9;
+    color: #4caf50;
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
+    transition-duration: 0.4;
+}
+
+.vessel_td {
+    height: 60;
+}
+
+.vessel_td a:hover {
+    text-decoration: underline;
+}
+
+.vessel_td a:visited {
+    color: darkgreen;
+}
+
+.vessel_td img {
+    width: 38px;
+    height: 22px;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -moz-box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+    -webkit-box-shadow: 0 4px 8px -3px rgb(100, 100, 100), -2px 0 8px -6px rgb(100, 100, 100), 2px 0px 8px -6px rgb(100, 100, 100);
+}
+
+.vessel_td_container {
+    height: 60;
+}
+
+.vessel_td_container a:hover {
+    text-decoration: underline;
+}
+
+.vessel_td_container a:visited {
+    color: darkgreen;
+}
+
+.td-orange-text {
+    color: darkorange;
+    font-weight: normal;
+}
+
+.td-min100 {
+    min-width: 100px;
+}
+
+.td-vessel-sort {
+    margin: 0px 0px 0px 16px;
+}
+
+.td-vessel-arrow {
+    font-size: 14px;
+    float: right;
+    font-weight: normal;
+}
+
+.vessel_row {
+    background: white;
+}
+
     </style>
-    <style>
-			.row {
-			  width: 100%;
-			  margin: 0 auto;
-			  padding-left:25px;
-			  padding-right:25px;
-			}
-			.block {			  
-			  float: left;
-			  border: 3px solid #00ffff;
-			  border-radius: 15px;
-			  padding:3px;
-			  margin:5px;
-			  margin: auto;
-			      TEXT-SHADOW: 1PX 1PX #1800ab;
-			  font-family: "Calibri";
-			  margin-bottom: 5px;
-			}
-			
-			.block:hover {
-			        background: rgba(0,0,0,0.5);
-			}
-
-
-            .clearfix:after {
-                content: " "; /* Older browser do not support empty content */
-                visibility: hidden;
-                display: block;
-                height: 0;
-                clear: both;
-            }
-
-            .hr {
-                border-top:2px dotted #000;
-                /*Rest of stuff here*/
-            }
-			
-			/* Smartphones (portrait and landscape) ----------- */
-			@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-				/*[class*="block"] {
-					width: 50%;
-				}*/
-			}
-
-			/* Smartphones (landscape) ----------- */
-			@media only screen and (min-width : 321px) {
-				
-			}
-
-			/* Smartphones (portrait) ----------- */
-			@media only screen and (max-width : 320px) {
-				
-			}
-
-			/* iPads (portrait and landscape) ----------- */
-			@media only screen and (min-device-width : 768px) 
-			and (max-device-width : 1024px) {
-				
-			}
-
-			/* iPads (landscape) ----------- */
-			@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
-				
-			}
-
-			/* iPads (portrait) ----------- */
-			@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) 
-			and (orientation : portrait) {
-				
-			}
-
-			/* Desktops and laptops ----------- */
-			@media only screen and (min-width : 1224px) {
-				
-			}
-
-			/* Large screens ----------- */
-			@media only screen and (min-width : 1824px) {
-				
-			}
-
-			/* iPhone 4 ----------- */
-			@media only screen and (-webkit-min-device-pixel-ratio : 1.5),only screen and (min-device-pixel-ratio : 1.5) {
-				
-			}
-		 </style>
-		 
-		 <style>
-		 .block{
-		     width: 95%;
-		 }
-		     @media only screen and (min-width: 600px) {
-  /* For tablets: */
-  
-}
-@media only screen and (min-width: 768px) {
-  /* For desktop: */
-  .block{
-		     width: 31%;
-		 }
-}
-		 </style>
 </head>
 <body class="container">
-    
-    
-    
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style="
     background: black !important;
 ">
   <a class="navbar-brand" href="#" style="font-size: 28px;
-    line-height: 0;"><img src="/icon.jpg" style="height: 35px; padding: 0;"> PortAuthor</a>
+    line-height: 0;"><img src="/icon.jpg" style="height: 35px;"> PortAuthor</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item ">
+      <li class="nav-item active">
         <a class="nav-link" href="/index.php">Home</a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="/ctms.php">CTMS</a>
       </li>
-       <li class="nav-item">
-        <a class="nav-link"  href="/vsl.php">Vassel info</a>
+        <li class="nav-item">
+        <a class="nav-link" target="_blank" href="/smail/index.html">S-Mail</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="login.php">Login</a>
@@ -367,73 +414,84 @@ marquee{
     margin-left: auto; text-align: right;
 ">
       <li class="nav-item">
-        <a class="nav-link" href="https://github.com/tas33n">made by Sohag</a>
+        <a class="nav-link" target="_blank"  href="https://github.com/tas33n">made by Sohag</a>
       </li>
     </ul>
   </div>
 </nav>
     
-    <marquee><h2 style="
-    /* font-size: 72px; */
-    background: -webkit-linear-gradient(#eee, #333);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-">CONTAINER TERMINAL MANAGEMENT SYSTEM(CTMS)</h2></marquee>
-
-<div class="form-outline" style="
-    max-width: 400px;
-">
-  <input type="search" id="filter" class="form-control" placeholder="Filter by Vessel/Rotation/Operator/Agent/Terminal"
-  aria-label="Search" style="
-    background: transparent;
-    color: white;
-" />
-</div>
-    
-    <div id="vasel">
-        <h4 class="text-center mt-3">CURRENTLY WORKING VESSEL</h4>
-        
-        <div class="overflow-auto vsl" style="
-    overflow: scroll;
-    margin-top: 20px;
-">
-            <?php echo $table; ?>
-        </div>
-    </div>
-    
-     <div id="vasel">
-        <h4 class="text-center mt-3">INCOMING VESSEL</h4>
-        
-        <div class="overflow-auto vsl" style="
-    overflow: scroll;
-    margin-top: 20px;
-">
-            <?php echo $table2; ?>
-        </div>
-    </div>
     
     
-        
-     <div id="vasel">
-        <h4 class="text-center mt-3">OUTGOING VESSEL</h4>
-        
-        <div class="overflow-auto vsl" style="
-    overflow: scroll;
-    margin-top: 20px;
+    
+    
+        <div id="cont" style="
+    margin-top: 67px;
 ">
-            <?php echo $table3; ?>
-        </div>
-    </div>
+        <h4 class="text-center mt-3">VASSEL INFO FROM 3RD PARTY</h4>
     
 
-    <!-- Optional JavaScript; choose one of the two! -->
+    <form class="form" id="mainForm" style="
+    padding-bottom: 40px;
+">
+        <div class="mb-3 mt-5">
+           <!-- <label for="locationInp" class="form-label">SEARCH BY VASSEL NAME / FLAG / CALL SIGN / IMO / MMSI</label>-->
+            <input class="form-control" id="locationInp" type="text" placeholder="SEARCH BY VASSEL NAME / FLAG / CALL SIGN / IMO / MMSI" aria-label="LOCATION ID" onkeypress="showdiv()" required>
+        </div>
+        <input type="submit" id="locationId" class="btn text-center btn-primary" value="SEARCH"></input>
+   
+    </form>
+
+    <div class="iframe hid col-sm-12" id="iframe">
+        	<div class="lds-dual-ring"></div>
+    </div>
+    
+ </div>
+
+ 
     
     <!-- Option 1: Bootstrap Bundle with Popper -->
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <script src="./script.js"></script>
+    <script>
+        
+        $(document).ready(() => {
+
+    $('#locationId').click((e) => {
+        e.preventDefault()
+        $('#mainForm').submit()
+    })
+
+    $('#mainForm').submit((e) => {
+        e.preventDefault();
+        console.log('submit');
+        id = $('#locationInp').val();
+        var url = "im.php?id="+id;
+        $.ajax({
+            url: url,
+        }).done((resp)=>{
+            $('#iframe').html(resp)
+            $('#iframe').removeClass('visually-hidden')
+        })
+
+        // $('#iframe').html(`
+        // <iframe src="${url}">
+
+        // </iframe>
+        // `)
+
+
+    })
+
+    send_html = (html) => {
+        $('#iframe').html(html)
+        $('#iframe').removeClass('#visually-hidden')
+    }
+
+})
+    </script>
     <script>
 $('#locationId').click(function() {
     $('#iframe').css({
@@ -441,8 +499,9 @@ $('#locationId').click(function() {
     });
 });
 </script>
-   
-   <script>
+
+
+<script>
      $("#filter").keyup(function() {
 
       // Retrieve the input field text and reset the count to zero
@@ -450,7 +509,7 @@ $('#locationId').click(function() {
         count = 0;
 
       // Loop through the comment list
-      $('#vasel .block').each(function() {
+      $('tbody tr').each(function() {
 
 
         // If the list item does not contain the text phrase fade it out
@@ -466,7 +525,12 @@ $('#locationId').click(function() {
       });
 
     });
+    
+    $('.vessel-link').attr('href').replace('www.shiplocation.com/vessels/', "portauthor.cf/vsl.php");
+    
+    $('a[href="www.shiplocation.com/vessels/"]').attr('href', 'portauthor.cf/vsl.php?');
 </script>
+   
 
 </body>
 </html>
